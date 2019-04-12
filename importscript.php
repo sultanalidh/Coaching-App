@@ -51,11 +51,11 @@ if (isset($_POST["import"])) {
         $file = fopen($fileName, "r");
         
     while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
-            /* Should I add the second quary here? 
-            $sql = "INSERT into ca_Scripts (scriptName, scriptAuthor) values ('" . $column[0] . "','" . $column[0] . "')";*/
+            /* Should I add the second quary here? */
+            $sql = "INSERT into ca_Scripts (scriptName, scriptAuthor) values ('" . $column[0] . "','" . $column[0] . "')";
     
             /* to import the data from a file to the data base. */
-            $sql .= "INSERT into ca_scriptLine (scriptLineId, act, scene, line, lineText)
+            $sql = "INSERT into ca_scriptLine (scriptLineId, act, scene, line, lineText)
                    values ('" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "','" . $column[7] . "')";
             $result = mysqli_query($conn, $sql);
             
