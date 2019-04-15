@@ -2,23 +2,30 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Add Record Form</title>
+<title>Add Script Form</title>
 </head>
 <body>
-<form method="page" action="" >
+
+   
+    <form class="form-horizontal" action="" method="post" name="uploadCSV"
+    enctype="multipart/form-data">
     <p>
-        <label for="firstName">First Name:</label>
-        <input type="text" name="cFirstName" id="cFirstName">
+        <label for="scriptName">Script's Name:</label>
+        <input type="text" name="scriptName" id="scriptName">
     </p>
     <p>
-        <label for="lastName">Last Name:</label>
-        <input type="text" name="cLastName" id="cLastName">
+        <label for="Author">Author's Name:</label>
+        <input type="text" name="Author" id="Author">
     </p>
-    <p>
-        <label for="emailAddress">Email Address:</label>
-        <input type="text" name="cEmail" id="cEmail">
-    </p>
-    <input type="submit" value="Submit">
+    <div class="input-row">
+        <label class="col-md-4 control-label">Choose CSV File</label> <input
+            type="file" name="file" id="file" accept=".csv">
+        <button type="submit" id="submit" name="import"
+            class="btn-submit">Import</button>
+        <br />
+
+    </div>
+  
 </form>
 </body>
 </html>
