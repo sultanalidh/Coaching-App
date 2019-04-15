@@ -29,8 +29,11 @@ get_header();
     </section><!-- #primary -->
     
 <?php
-/* Attempt MySQL server connection. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
+$scriptName = $_POST['scriptName'];
+$Author = $_POST['Author'];
+if (!empty($scriptName) || !empty($Author)) {
+	
+/* Attempt MySQL server connection. */
 $link = mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
  
 // Check connection
@@ -97,15 +100,15 @@ mysqli_close($link);
     enctype="multipart/form-data">
     <p>
         <label for="scriptName">Script's Name:</label>
-        <input type="text" name="scriptName" id="scriptName">
+        <input type="text" name="scriptName" id="scriptName" required>
     </p>
     <p>
         <label for="Author">Author's Name:</label>
-        <input type="text" name="Author" id="Author">
+        <input type="text" name="Author" id="Author" required>
     </p>
     <div class="input-row">
-        <label class="col-md-4 control-label">Choose CSV File</label> <input
-            type="file" name="file" id="file" accept=".csv">
+        <label class="col-md-4 control-label">Choose CSV File</label> 
+	    <input type="file" name="file" id="file" accept=".csv" required>
         <button type="submit" id="submit" name="import"
             class="btn-submit">Import</button>
         <br />
