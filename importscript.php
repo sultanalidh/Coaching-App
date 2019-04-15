@@ -47,7 +47,7 @@ $Author = mysqli_real_escape_string($link, $_REQUEST['Author']);
 // Attempt insert query execution
 $sql = "INSERT INTO ca_Scripts (scriptName, Author) VALUES
             ('$scriptName', '$Author')";
-if(mysqli_query($link, $sql)){
+if(mysqli_multi_query($link, $sql)){
     echo "Records added successfully.";
 } else{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
@@ -65,11 +65,11 @@ if (isset($_POST["import"])) {
             
     
 			/* to import the data from a file to the data base and add it to the cs_Scripts table */
-			$sql = "INSERT into ca_scriptLines (scriptLineId,scriptid, act, scene, scriptline, lineText, characterId)
-				   values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "')";
+			$sql = "INSERT into  ca_scriptLines (scriptLineId,scriptid , act, scene, scriptline, lineText, characterId)
+				   values ('" . $column[0] . "',(SELECT MAX(scriptId) FROM ca_Scripts) ,'" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "')";
 				  /* "SELECT scriptId FROM ca_Scripts WHERE scriptName = 'scriptName' ";*/
-				   /*"SELECT MAX(scriptId) FROM ca_Scripts";*/
-            $result = mysqli_query($link, $sql); 
+				 /*  "SELECT MAX(scriptId) FROM ca_Scripts";*/
+            $result = mysqli_multi_query($link, $sql); 
             
             
             
