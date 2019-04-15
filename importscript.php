@@ -29,8 +29,7 @@ get_header();
     </section><!-- #primary -->
     
 <?php
-/* Attempt MySQL server connection. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
+/* Attempt MySQL server connection. */
 $link = mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
  
 // Check connection
