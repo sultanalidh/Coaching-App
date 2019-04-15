@@ -1,6 +1,7 @@
-<?php /* Template Name: ImportScripts */ 
+<?php /* Template Name: Importig1 */
 
-
+/* Here is the function to get input from the add scripts form. It will have the name
+of the scripts and the Author's name.  */
 
 get_header();
 ?>
@@ -25,23 +26,33 @@ get_header();
 			?>
 
 		</main><!-- #main -->
-	</section><!-- #primary -->
-
-
+    </section><!-- #primary -->
+    
 <?php
-
-
-
-$conn=mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
-
-/* check connection */
-if (mysqli_connect_errno()) {
-    printf("Connect failed: %s\n", mysqli_connect_error());
-    exit();
+/* Attempt MySQL server connection. Assuming you are running MySQL
+server with default setting (user 'root' with no password) */
+$link = mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
+ 
+// Check connection
+if($link === false){
+    die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
+// Escape user inputs for security
 
+$scriptName = mysqli_real_escape_string($link, $_REQUEST['scriptName']);
+$Author = mysqli_real_escape_string($link, $_REQUEST['Author']);
 
+ 
+// Attempt insert query execution
+$sql = "INSERT INTO ca_Scripts (scriptName, Author) VALUES
+            ('$scriptName', '$Author')";
+if(mysqli_query($link, $sql)){
+    echo "Records added successfully.";
+} else{
+    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
+}
+ 
 if (isset($_POST["import"])) {
     
     $fileName = $_FILES["file"]["tmp_name"];
@@ -51,13 +62,16 @@ if (isset($_POST["import"])) {
         $file = fopen($fileName, "r");
         
     while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
-            /* Should I add the second quary here? */
-            $sql = "INSERT into ca_Scripts (scriptName, scriptAuthor) values ('" . $column[0] . "','" . $column[0] . "')";
+            
     
-            /* to import the data from a file to the data base. */
-            $sql = "INSERT into ca_scriptLine (scriptLineId, act, scene, line, lineText)
-                   values ('" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "','" . $column[7] . "')";
-            $result = mysqli_query($conn, $sql);
+			/* to import the data from a file to the data base and add it to the cs_Scripts table */
+			$sql = "INSERT into ca_scriptLines (scriptLineId,scriptid, act, scene, scriptline, lineText, characterId)
+				   values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "')";
+				  /* "SELECT scriptId FROM ca_Scripts WHERE scriptName = 'scriptName' ";*/
+				   /*"SELECT MAX(scriptId) FROM ca_Scripts";*/
+            $result = mysqli_query($link, $sql); 
+            
+            
             
     if (! empty($result)) {
             $type = "success";
@@ -70,6 +84,11 @@ if (isset($_POST["import"])) {
         }
     }
 }
+
+
+// Close connection
+
+mysqli_close($link);
 
 ?>
 <?php
