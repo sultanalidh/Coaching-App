@@ -89,6 +89,6 @@ if (isset($_POST["import"])) {
 
 mysqli_close($link);
 
-?>
+
 <?php
 get_footer();
