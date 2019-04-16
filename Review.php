@@ -29,35 +29,38 @@ get_header();
     </section><!-- #primary -->
     
 <?php
+
 $scriptName = $_POST['scriptName'];
 $Author = $_POST['Author'];
-if (!empty($scriptName) || !empty($Author)) {
+
 	
-/* Attempt MySQL server connection. */
+/* Attempt MySQL server connection.  */
 $link = mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
- 
+
 // Check connection
 if($link === false){
     die("ERROR: Could not connect. " . mysqli_connect_error());
 }
 
 // Escape user inputs for security
-
+if (!empty($scriptName) || !empty($Author)) {
 $scriptName = mysqli_real_escape_string($link, $_REQUEST['scriptName']);
 $Author = mysqli_real_escape_string($link, $_REQUEST['Author']);
-
+}
  
 // Attempt insert query execution
 $sql = "INSERT INTO ca_Scripts (scriptName, Author) VALUES
             ('$scriptName', '$Author')";
 if(mysqli_multi_query($link, $sql)){
-    echo "Records added successfully.";
+    
 } else{
     echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
 }
- 
-if (isset($_POST["import"])) {
+ //print_r($_POST);
+ //echo "Here ". (isset($_POST["import"]));
+if ( ! empty(isset($_POST["import"]))) {
     
+}
     $fileName = $_FILES["file"]["tmp_name"];
     
     if ($_FILES["file"]["size"] > 0) {
@@ -70,8 +73,7 @@ if (isset($_POST["import"])) {
 			/* to import the data from a file to the data base and add it to the cs_Scripts table */
 			$sql = "INSERT into  ca_scriptLines (scriptLineId,scriptid , act, scene, scriptline, lineText, characterId)
 				   values ('" . $column[0] . "',(SELECT MAX(scriptId) FROM ca_Scripts) ,'" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "')";
-				  /* "SELECT scriptId FROM ca_Scripts WHERE scriptName = 'scriptName' ";*/
-				 /*  "SELECT MAX(scriptId) FROM ca_Scripts";*/
+				  
             $result = mysqli_multi_query($link, $sql); 
             
             
@@ -84,7 +86,8 @@ if (isset($_POST["import"])) {
     else {
         $type = "error";
         $message = "Problem in Importing CSV Data";
-            }
+    
+            
         }
     }
 }
@@ -96,25 +99,7 @@ mysqli_close($link);
 
 
 ?>
-<form class="form-horizontal" action="" method="post" name="uploadCSV"
-    enctype="multipart/form-data">
-    <p>
-        <label for="scriptName">Script's Name:</label>
-        <input type="text" name="scriptName" id="scriptName" required>
-    </p>
-    <p>
-        <label for="Author">Author's Name:</label>
-        <input type="text" name="Author" id="Author" required>
-    </p>
-    <div class="input-row">
-        <label class="col-md-4 control-label">Choose CSV File</label> 
-	    <input type="file" name="file" id="file" accept=".csv" required>
-        <button type="submit" id="submit" name="import"
-            class="btn-submit">Import</button>
-        <br />
 
-    </div>
-  
-</form>
 <?php
 get_footer();
+
