@@ -100,7 +100,7 @@ if ( ! empty(isset($_POST["import"])))  {
             $type = "success";
             $message = "CSV Data Imported into the Database";
             /* This will redierct to the Manging the scripts page after importing the file */
-            header('Location: http://jeremysortore.com/home/');
+            header('Location: http://example.com/');
             
     } 
     else {
