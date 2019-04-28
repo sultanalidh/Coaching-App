@@ -44,30 +44,20 @@ get_header();
 	<?php do_action( 'ocean_after_content_wrap' ); ?>
 <?php
 
-/* Attempt MySQL server connection. Assuming you are running MySQL
-server with default setting (user 'root' with no password) */
-$link = mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
- 
-// Check connection
-if($link === false){
-    die("ERROR: Could not connect. " . mysqli_connect_error());
+<?php
+
+
+
+$conn=mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
+
+/* check connection */
+if (mysqli_connect_errno()) {
+    printf("Connect failed: %s\n", mysqli_connect_error());
+    exit();
 }
 
-// Escape user inputs for security
 
-$scriptName = mysqli_real_escape_string($link, $_REQUEST['scriptName']);
-$Author = mysqli_real_escape_string($link, $_REQUEST['Author']);
 
- 
-// Attempt insert query execution
-$sql = "INSERT INTO ca_Scripts (scriptName, Author) VALUES
-            ('$scriptName', '$Author')";
-if(mysqli_query($link, $sql)){
-    echo "Records added successfully.";
-} else{
-    echo "ERROR: Could not able to execute $sql. " . mysqli_error($link);
-}
- 
 if (isset($_POST["import"])) {
     
     $fileName = $_FILES["file"]["tmp_name"];
@@ -77,16 +67,9 @@ if (isset($_POST["import"])) {
         $file = fopen($fileName, "r");
         
     while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
-            
-    
-			/* to import the data from a file to the data base and add it to the cs_Scripts table */
-			$sql = "INSERT into ca_scriptLines (scriptLineId,scriptid, act, scene, scriptline, lineText, characterId)
-				   values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "','" . $column[4] . "','" . $column[5] . "','" . $column[6] . "')";
-				  /* "SELECT scriptId FROM ca_Scripts WHERE scriptName = 'scriptName' ";*/
-				   /*"SELECT MAX(scriptId) FROM ca_Scripts";*/
-            $result = mysqli_query($link, $sql); 
-            
-            
+            $sql = "INSERT into ca_Contacts (cFirstName, cLastName, cEmail, cType)
+                   values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "')";
+            $result = mysqli_query($conn, $sql);
             
     if (! empty($result)) {
             $type = "success";
@@ -99,12 +82,12 @@ if (isset($_POST["import"])) {
         }
     }
 }
-
-
 // Close connection
 
 mysqli_close($link);
 
+
 ?>
+
 <?php
 get_footer();
