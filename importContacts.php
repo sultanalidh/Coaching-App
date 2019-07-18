@@ -47,8 +47,8 @@ get_header();
 <?php
 
 
-
-$conn=mysqli_connect("localhost", "sultan_wrdp2", "12345", "sultan_wrdp2");
+/* replace the info below with your info */ 
+$conn=mysqli_connect("localhost", "*****", "****", "******");
 
 /* check connection */
 if (mysqli_connect_errno()) {
@@ -65,7 +65,7 @@ if (isset($_POST["import"])) {
     if ($_FILES["file"]["size"] > 0) {
         
         $file = fopen($fileName, "r");
-        
+        /*  The name for the database can differ, I am using what I have in both the CSV file template and the database*/
     while (($column = fgetcsv($file, 10000, ",")) !== FALSE) {
             $sql = "INSERT into ca_Contacts (cFirstName, cLastName, cEmail, cType)
                    values ('" . $column[0] . "','" . $column[1] . "','" . $column[2] . "','" . $column[3] . "')";
